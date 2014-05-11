@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jamon@clearsightstudio.com"]
   spec.description   = %q{Adds push notification support to ProMotion.}
   spec.summary       = %q{Adds push notification support to ProMotion. Extracted from ProMotion.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/clearsightstudio/ProMotion-push"
   spec.license       = "MIT"
 
   files = []
