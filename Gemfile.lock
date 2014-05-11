@@ -1,14 +1,17 @@
-PATH
-  remote: .
-  specs:
-    ProMotion-push (0.0.1)
-
-PATH
-  remote: ../ProMotion
+GIT
+  remote: https://github.com/clearsightstudio/ProMotion.git
+  revision: 40d1f0dfc5d5cb3a43b61b4d02d6c4c9376c1507
+  branch: pm2
   specs:
     ProMotion (2.0.0)
       dbt (~> 1.1.4)
       methadone (~> 1.3)
+
+PATH
+  remote: .
+  specs:
+    ProMotion-push (0.0.1)
+      ProMotion (~> 2.0.0)
 
 GEM
   remote: https://rubygems.org/

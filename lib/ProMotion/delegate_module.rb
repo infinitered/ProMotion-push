@@ -4,7 +4,7 @@ module ProMotion
     include ProMotion::DelegateNotifications
   end
 
-  class Delegate
+  class Delegate < ProMotion::DelegateParent
     include ProMotion::DelegateNotifications
   end
 end

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
 # Define all dependencies in your .gemspec file
-gem "ProMotion", path: "../ProMotion"
+gem "ProMotion", git: "https://github.com/clearsightstudio/ProMotion.git", branch: "pm2"
 gemspec
