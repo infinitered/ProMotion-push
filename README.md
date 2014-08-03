@@ -1,6 +1,6 @@
 # ProMotion-push
 
-ProMotion-push is push notification support, extracted from the 
+ProMotion-push is push notification support, extracted from the
 popular RubyMotion gem [ProMotion](https://github.com/clearsightstudio/ProMotion).
 
 ## Installation
@@ -13,11 +13,12 @@ gem 'ProMotion-push'
 
 ### AppDelegate
 
-ProMotion-push adds a few methods to PM::Delegate.
+Include PM::DelegateNotifications to add a few methods to PM::Delegate.
 
 ```ruby
 # app/app_delegate.rb
 class AppDelegate < PM::Delegate
+  include PM::DelegateNotifications
 
   def on_load(app, options)
     register_for_push_notifications :badge, :sound, :alert, :newsstand
@@ -128,7 +129,7 @@ def on_push_notification(notification, launched)
 end
 ```
 
-The best way to test push notifications is on a device, but it's often useful to test 
+The best way to test push notifications is on a device, but it's often useful to test
 them in the simulator. We provide a way to do that from the REPL or in code.
 
 ```ruby

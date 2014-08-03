@@ -2,7 +2,6 @@ describe "push notifications" do
   before { @subject = AppDelegate.new }
 
   it "should handle push notifications" do
-
     @subject.mock!(:on_push_notification) do |notification, was_launched|
       notification.should.be.kind_of(ProMotion::PushNotification)
       notification.alert.should == "Eating Bacon"
@@ -14,7 +13,6 @@ describe "push notifications" do
     launch_options = { UIApplicationLaunchOptionsRemoteNotificationKey => ProMotion::PushNotification.fake_notification(alert: "Eating Bacon", badge: 42, sound: "jamon").notification }
     @subject.application(UIApplication.sharedApplication, willFinishLaunchingWithOptions: nil)
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:launch_options )
-
   end
 
   it "should return the registered push notification types as an array" do
