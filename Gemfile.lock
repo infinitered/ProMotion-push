@@ -2,14 +2,14 @@ PATH
   remote: .
   specs:
     ProMotion-push (0.1.0)
-      ProMotion (~> 2.0.0.rc3)
+      ProMotion (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    ProMotion (2.0.0.rc3)
+    ProMotion (2.0.0)
       methadone (~> 1.4)
-    methadone (1.4.0)
+    methadone (1.5.1)
       bundler
     motion-redgreen (0.1.0)
     motion-stump (0.3.2)
