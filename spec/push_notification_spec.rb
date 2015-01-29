@@ -15,24 +15,6 @@ describe "push notifications" do
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:launch_options )
   end
 
-  it "should return the registered push notification types as an array" do
-    @subject.registered_push_notifications.should == []
-    bits = 0
-    types = []
-    { badge:      UIRemoteNotificationTypeBadge,
-      sound:      UIRemoteNotificationTypeSound,
-      alert:      UIRemoteNotificationTypeAlert,
-      newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability }.each do |symbol, bit|
-        UIApplication.sharedApplication.stub!(:enabledRemoteNotificationTypes, return: bit)
-        @subject.registered_push_notifications.should == [symbol]
-
-        bits |= bit
-        types << symbol
-        UIApplication.sharedApplication.stub!(:enabledRemoteNotificationTypes, return: bits)
-        @subject.registered_push_notifications.should == types
-      end
-  end
-
   it "should return false for was_launched if the app is currently active on screen" do
     @subject.mock!(:on_push_notification) do |notification, was_launched|
       was_launched.should.be.false
@@ -76,6 +58,25 @@ describe "push notifications" do
     it "should return nil for :register_push_notification_category" do
       @subject.register_push_notification_category("category", [], {}).should.be.nil
     end
+
+    it "should return the registered push notification types as an array" do
+      @subject.registered_push_notifications.should == []
+      bits = 0
+      types = []
+      {
+        badge:      UIRemoteNotificationTypeBadge,
+        sound:      UIRemoteNotificationTypeSound,
+        alert:      UIRemoteNotificationTypeAlert,
+        newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability }.each do |symbol, bit|
+          @app.stub!(:enabledRemoteNotificationTypes, return: bit)
+          @subject.registered_push_notifications.should == [symbol]
+
+          bits |= bit
+          types << symbol
+          @app.stub!(:enabledRemoteNotificationTypes, return: bits)
+          @subject.registered_push_notifications.should == types
+        end
+    end
   end
 
   describe "on iOS 8 +" do
@@ -118,12 +119,34 @@ describe "push notifications" do
       notification = ProMotion::PushNotification.fake_notification(alert: "Eating Bacon", badge: 42, sound: "jamon").notification
       @subject.application(UIApplication.sharedApplication, handleActionWithIdentifier: "my category", forRemoteNotification: notification, completionHandler: -> {})
     end
+
+    it "should return the registered push notification types as an array" do
+      @subject.registered_push_notifications.should == []
+      bits = 0
+      types = []
+      {
+        badge:      UIRemoteNotificationTypeBadge,
+        sound:      UIRemoteNotificationTypeSound,
+        alert:      UIRemoteNotificationTypeAlert,
+        newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability }.each do |symbol, bit|
+          @app.stub!(:currentUserNotificationSettings, return: stub(:types, return: bit))
+          @subject.registered_push_notifications.should == [symbol]
+
+          bits |= bit
+          types << symbol
+          @app.stub!(:currentUserNotificationSettings, return: stub(:types, return: bits))
+          @subject.registered_push_notifications.should == types
+        end
+    end
   end
 
   class IOS7Application
     attr_accessor :types
     def registerForRemoteNotificationTypes(types)
       self.types = types
+    end
+    def enabledRemoteNotificationTypes
+      0
     end
   end
   class IOS8Application
@@ -136,6 +159,9 @@ describe "push notifications" do
 
     def registerForRemoteNotifications
       self.registered_for_notifications = true
+    end
+    def currentUserNotificationSettings
+      mock(:types, return: 0)
     end
   end
 end

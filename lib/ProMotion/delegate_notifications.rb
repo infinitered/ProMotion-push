@@ -54,8 +54,12 @@ module ProMotion
     end
 
     def registered_push_notifications
-      mask = UIApplication.sharedApplication.enabledRemoteNotificationTypes
       types = []
+      if UIApplication.sharedApplication.respond_to?(:currentUserNotificationSettings)
+        mask = UIApplication.sharedApplication.currentUserNotificationSettings.types
+      else
+        mask = UIApplication.sharedApplication.enabledRemoteNotificationTypes
+      end
 
       types << :badge     if mask & UIRemoteNotificationTypeBadge > 0
       types << :sound     if mask & UIRemoteNotificationTypeSound > 0
