@@ -10,6 +10,19 @@ module ProMotion
       end
     end
 
+    def register_push_notification_category(category_name, actions, options = {})
+      return unless actionable_notifications?
+
+      @push_notification_categories ||= []
+      UIMutableUserNotificationCategory.new.tap do |category|
+        minimal = options[:minimal]
+        category.setActions(minimal, forContext: UIUserNotificationActionContextMinimal) if minimal
+        category.setActions(actions, forContext: UIUserNotificationActionContextDefault)
+        category.identifier = category_name
+        @push_notification_categories << category
+      end
+    end
+
     def register_for_push_notifications(*notification_types)
       notification_types = Array.new(notification_types)
       notification_types = [ :badge, :sound, :alert, :newsstand ] if notification_types.include?(:all)
@@ -17,7 +30,23 @@ module ProMotion
       types = UIRemoteNotificationTypeNone
       notification_types.each { |t| types = types | map_notification_symbol(t) }
 
-      UIApplication.sharedApplication.registerForRemoteNotificationTypes types
+      register_for_push_notification_types(types)
+    end
+
+    def register_for_push_notification_types(types)
+      UIApplication.sharedApplication.tap do |application|
+        if actionable_notifications?
+          settings = UIUserNotificationSettings.settingsForTypes(types, categories: @push_notification_categories)
+          application.registerUserNotificationSettings settings
+          application.registerForRemoteNotifications
+        else
+          application.registerForRemoteNotificationTypes types
+        end
+      end
+    end
+
+    def actionable_notifications?
+      UIApplication.sharedApplication.respond_to?(:registerUserNotificationSettings)
     end
 
     def unregister_for_push_notifications
@@ -34,6 +63,11 @@ module ProMotion
       types << :newsstand if mask & UIRemoteNotificationTypeNewsstandContentAvailability > 0
 
       types
+    end
+
+    def received_push_notification_with_action(notification, action)
+      @aps_notification = ProMotion::PushNotification.new(notification)
+      on_push_notification_action(action, @aps_notification) if respond_to?(:on_push_notification_action)
     end
 
     def received_push_notification(notification, was_launched)
@@ -53,6 +87,11 @@ module ProMotion
 
     def application(application, didReceiveRemoteNotification:notification)
       received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+    end
+
+    def application(application, handleActionWithIdentifier: action_identifier, forRemoteNotification: notification, completionHandler: callback)
+      received_push_notification_with_action(notification, action_identifier)
+      callback.call
     end
 
     protected
