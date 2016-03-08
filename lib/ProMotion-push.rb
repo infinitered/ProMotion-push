@@ -8,4 +8,6 @@ Motion::Project::App.setup do |app|
   lib_dir_path = File.dirname(File.expand_path(__FILE__))
   app.files << File.join(lib_dir_path, "ProMotion/push_notification.rb")
   app.files << File.join(lib_dir_path, "ProMotion/delegate_notifications.rb")
+  app.info_plist['UIBackgroundModes'] ||= []
+  app.info_plist['UIBackgroundModes'] << "remote-notification"
 end

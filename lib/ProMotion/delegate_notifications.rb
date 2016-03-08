@@ -81,16 +81,23 @@ module ProMotion
 
     # CocoaTouch
 
-    def application(application, didRegisterForRemoteNotificationsWithDeviceToken:device_token)
+    def application(application, didRegisterForRemoteNotificationsWithDeviceToken: device_token)
       on_push_registration(device_token, nil) if respond_to?(:on_push_registration)
     end
 
-    def application(application, didFailToRegisterForRemoteNotificationsWithError:error)
+    def application(application, didFailToRegisterForRemoteNotificationsWithError: error)
       on_push_registration(nil, error) if respond_to?(:on_push_registration)
     end
 
-    def application(application, didReceiveRemoteNotification:notification)
+    def application(application, didReceiveRemoteNotification: notification)
       received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+    end
+
+    def application(application, didReceiveRemoteNotification: notification, fetchCompletionHandler: callback)
+      result = received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+      valid_responses = [UIBackgroundFetchResultNewData, UIBackgroundFetchResultNoData, UIBackgroundFetchResultFailed]
+      fetch_result = valid_responses.include?(result) ? result : UIBackgroundFetchResultNoData
+      callback.call(fetch_result)
     end
 
     def application(application, handleActionWithIdentifier: action_identifier, forRemoteNotification: notification, completionHandler: callback)

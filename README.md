@@ -104,6 +104,28 @@ def on_push_notification(notification, launched)
 end
 ```
 
+ProMotion-push automatically adds support for "background" handling of notifications. If your push notification payload includes `content-available: 1` then you may have an opportunity to pre-fetch data. The return value of the `on_push_notification` method should be a `UIBackgroundFetchResult` that best matches the result of your code. The default is `UIBackgroundFetchResultNoData`, so you don't need to return anything if you did not fetch any data. For example:
+
+```ruby
+# Payload:
+# {
+#   "aps": {
+#     "content-available": 1,
+#     "alert": "My test notification",
+#     "badge": 3,
+#     "sound": "default"
+#   },
+#   "type": "new_messages"
+# }
+
+def on_push_notification(notification, launched)
+  if notification.type == "new_messages"
+    MessagesScreen.load_data
+    UIBackgroundFetchResultNewData
+  end
+end
+```
+
 #### registered_push_notifications
 
 Returns the currently registered notifications as an array of symbols.
