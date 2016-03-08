@@ -104,7 +104,7 @@ def on_push_notification(notification, launched)
 end
 ```
 
-ProMotion-push automatically adds support for "background" handling of notifications. If your push notification payload includes `content-available: 1` then you may have an opportunity to pre-fetch data. The return value of the `on_push_notification` method should be a `UIBackgroundFetchResult` that best matches the result of your code. The default is `UIBackgroundFetchResultNoData`, so you don't need to return anything if you did not fetch any data. For example:
+ProMotion-push automatically adds support for handling push notifications while your app is in the background. If your push notification payload includes `content-available: 1` then you may have an opportunity to pre-fetch data. The return value of the `on_push_notification` method should be a `UIBackgroundFetchResult` that best matches your result. The default is `UIBackgroundFetchResultNoData`, so you don't need to return anything if you did not fetch any data. For example:
 
 ```ruby
 # Payload:
