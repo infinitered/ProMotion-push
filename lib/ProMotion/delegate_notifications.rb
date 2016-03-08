@@ -95,9 +95,7 @@ module ProMotion
 
     def application(application, didReceiveRemoteNotification: notification, fetchCompletionHandler: callback)
       result = received_push_notification(notification, application.applicationState != UIApplicationStateActive)
-      valid_responses = [UIBackgroundFetchResultNewData, UIBackgroundFetchResultNoData, UIBackgroundFetchResultFailed]
-      fetch_result = valid_responses.include?(result) ? result : UIBackgroundFetchResultNoData
-      callback.call(fetch_result)
+      callback.call(background_fetch_result(result))
     end
 
     def application(application, handleActionWithIdentifier: action_identifier, forRemoteNotification: notification, completionHandler: callback)
@@ -115,6 +113,19 @@ module ProMotion
         alert:      UIRemoteNotificationTypeAlert,
         newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability
       }[symbol] || UIRemoteNotificationTypeNone
+    end
+
+    def background_fetch_result(result)
+      options = {
+        new_data: UIBackgroundFetchResultNewData,
+        no_data: UIBackgroundFetchResultNoData,
+        failed: UIBackgroundFetchResultFailed
+      }
+      return options[result] if options[result]
+
+      return result if options.values.include?(result)
+
+      UIBackgroundFetchResultNoData
     end
 
   end
