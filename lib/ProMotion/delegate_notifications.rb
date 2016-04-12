@@ -81,16 +81,21 @@ module ProMotion
 
     # CocoaTouch
 
-    def application(application, didRegisterForRemoteNotificationsWithDeviceToken:device_token)
+    def application(application, didRegisterForRemoteNotificationsWithDeviceToken: device_token)
       on_push_registration(device_token, nil) if respond_to?(:on_push_registration)
     end
 
-    def application(application, didFailToRegisterForRemoteNotificationsWithError:error)
+    def application(application, didFailToRegisterForRemoteNotificationsWithError: error)
       on_push_registration(nil, error) if respond_to?(:on_push_registration)
     end
 
-    def application(application, didReceiveRemoteNotification:notification)
+    def application(application, didReceiveRemoteNotification: notification)
       received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+    end
+
+    def application(application, didReceiveRemoteNotification: notification, fetchCompletionHandler: callback)
+      result = received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+      callback.call(background_fetch_result(result))
     end
 
     def application(application, handleActionWithIdentifier: action_identifier, forRemoteNotification: notification, completionHandler: callback)
@@ -108,6 +113,19 @@ module ProMotion
         alert:      UIRemoteNotificationTypeAlert,
         newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability
       }[symbol] || UIRemoteNotificationTypeNone
+    end
+
+    def background_fetch_result(result)
+      options = {
+        new_data: UIBackgroundFetchResultNewData,
+        no_data: UIBackgroundFetchResultNoData,
+        failed: UIBackgroundFetchResultFailed
+      }
+      return options[result] if options[result]
+
+      return result if options.values.include?(result)
+
+      UIBackgroundFetchResultNoData
     end
 
   end

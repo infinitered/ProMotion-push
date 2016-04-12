@@ -107,7 +107,6 @@ describe "push notifications" do
     end
 
     it "should call on_push_notification_action if its implemented" do
-
       @subject.mock!(:on_push_notification_action) do |action, notification|
         notification.should.be.kind_of(ProMotion::PushNotification)
         notification.alert.should == "Eating Bacon"
