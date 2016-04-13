@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |spec|
   spec.name          = "ProMotion-push"
-  spec.version       = "0.3.1"
+  spec.version       = "0.4.0"
   spec.authors       = ["Jamon Holmgren"]
-  spec.email         = ["jamon@clearsightstudio.com"]
+  spec.email         = ["jamon@infinite.red"]
   spec.description   = %q{Adds push notification support to ProMotion.}
-  spec.summary       = %q{Adds push notification support to ProMotion. Extracted from ProMotion.}
-  spec.homepage      = "https://github.com/clearsightstudio/ProMotion-push"
+  spec.summary       = %q{Adds push notification support to ProMotion.}
+  spec.homepage      = "https://github.com/infinitered/ProMotion-push"
   spec.license       = "MIT"
 
   files = []
