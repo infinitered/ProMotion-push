@@ -136,6 +136,55 @@ def some_method
 end
 ```
 
+### Actionable Notifications
+As of IOS 8, notifications can include action buttons in the lock screen, notification banners and notification center. This is called the "Minimal" context and supports 2 actions. The "Default" context supports up to 4 Actions and applies when alerts are opened as popups.
+
+To use these features with ProMotion-push you need to:
+
+1. Define each action you plan to include in a notification for either context.
+```ruby
+    approve_action = UIMutableUserNotificationAction.new.tap do | action |
+      action.identifier = "APPROVE_ACTION"
+      action.title = "Approve"
+      action.activationMode = UIUserNotificationActivationModeBackground
+      action.authenticationRequired = false
+    end
+```
+
+2. Register your actions by calling `register_push_notification_category` from your AppDelegate code prior to `register_for_push_notifications`, for each category of action you intend to use. Note that you must include a separate array for the actions to show in the minimal context.
+
+```ruby
+def on_load(app, options)
+    register_push_notification_category 'APPROVAL_ACTIONS', [approve_action, deny_action, self_destruct_action], minimal: [approve_action]
+    register_push_notification_category 'SECOND_CATEGORY_NAME', # ...
+    # ... 
+    register_for_push_notifications :badge, :sound, :alert, :newsstand # or :all
+    # ...
+end
+```
+
+2. Include one of the categories you just defined in your push payload
+```json
+{
+    "aps" :  {
+        "alert" : "Do you approve?",
+        "category" : "APPROVAL_ACTIONS"
+    }
+}
+```
+
+3. Implement `on_push_notification_action` in your AppDelegate to handle the selected action
+```ruby
+def on_push_notification_action(action, notification)
+  # handle the action
+  case action
+  when 'APPROVE_ACTION'
+    # approve
+  when 'DENY_ACTION'
+    # deny
+  end
+end
+```
 
 ### ProMotion::PushNotification
 
