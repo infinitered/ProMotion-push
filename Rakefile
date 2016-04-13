@@ -2,6 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
+require 'motion/project/template/gem/gem_tasks'
 Bundler.require(:development)
 require 'ProMotion'
 require 'ProMotion-push'
