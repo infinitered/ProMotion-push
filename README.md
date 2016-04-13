@@ -141,7 +141,7 @@ As of IOS 8, notifications can include action buttons in the lock screen, notifi
 
 To use these features with ProMotion-push you need to:
 
-1. Define each action you plan to include in a notification for either context.
+Define each action you plan to include in a notification for either context.
 ```ruby
     approve_action = UIMutableUserNotificationAction.new.tap do | action |
       action.identifier = "APPROVE_ACTION"
@@ -151,8 +151,7 @@ To use these features with ProMotion-push you need to:
     end
 ```
 
-2. Register your actions by calling `register_push_notification_category` from your AppDelegate code prior to `register_for_push_notifications`, for each category of action you intend to use. Note that you must include a separate array for the actions to show in the minimal context.
-
+Register your actions by calling `register_push_notification_category` from your AppDelegate code prior to `register_for_push_notifications`, for each category of action you intend to use. Note that you must include a separate array for the actions to show in the minimal context.
 ```ruby
 def on_load(app, options)
     register_push_notification_category 'APPROVAL_ACTIONS', [approve_action, deny_action, self_destruct_action], minimal: [approve_action]
@@ -163,7 +162,7 @@ def on_load(app, options)
 end
 ```
 
-2. Include one of the categories you just defined in your push payload
+Include one of the categories you just defined in your push payload
 ```json
 {
     "aps" :  {
@@ -173,7 +172,7 @@ end
 }
 ```
 
-3. Implement `on_push_notification_action` in your AppDelegate to handle the selected action
+Implement `on_push_notification_action` in your AppDelegate to handle the selected action
 ```ruby
 def on_push_notification_action(action, notification)
   # handle the action
