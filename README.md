@@ -1,7 +1,7 @@
 # ProMotion-push
 
 ProMotion-push is push notification support, extracted from the
-popular RubyMotion gem [ProMotion](https://github.com/clearsightstudio/ProMotion) and is maintained by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+popular RubyMotion gem [ProMotion](https://github.com/clearsightstudio/ProMotion) and was created by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use it, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
 
 ## Installation
 
