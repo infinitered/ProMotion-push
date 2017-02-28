@@ -94,7 +94,7 @@ module ProMotion
     end
 
     def application(application, didReceiveRemoteNotification: notification, fetchCompletionHandler: callback)
-      result = received_push_notification(notification, application.applicationState != UIApplicationStateActive)
+      result = received_push_notification(notification, application.applicationState == UIApplicationStateInactive)
       callback.call(background_fetch_result(result))
     end
 
