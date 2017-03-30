@@ -1,7 +1,7 @@
 # ProMotion-push
 
 ProMotion-push is push notification support, extracted from the
-popular RubyMotion gem [ProMotion](https://github.com/clearsightstudio/ProMotion) and was created by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use it, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
+popular RubyMotion gem [ProMotion](https://github.com/infinitered/ProMotion) and was created by [Infinite Red](https://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use it, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
 
 ## Installation
 
@@ -156,7 +156,7 @@ Register your actions by calling `register_push_notification_category` from your
 def on_load(app, options)
     register_push_notification_category 'APPROVAL_ACTIONS', [approve_action, deny_action, self_destruct_action], minimal: [approve_action]
     register_push_notification_category 'SECOND_CATEGORY_NAME', # ...
-    # ... 
+    # ...
     register_for_push_notifications :badge, :sound, :alert, :newsstand # or :all
     # ...
 end
@@ -273,3 +273,7 @@ notification.notification # => Hash
 4. Make some specs pass
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create new Pull Request
+
+## Premium Support
+
+[ProMotion](https://github.com/infinitered/ProMotion) and [ProMotion-push](https://github.com/infinitered/ignite-vector-icons), as open source projects, are free to use and always will be. [Infinite Red](https://infinite.red/) offers premium ProMotion and ProMotion-push support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
